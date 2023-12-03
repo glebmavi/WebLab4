@@ -2,8 +2,6 @@ package co.glebmavi.webproglab4.controller;
 
 import co.glebmavi.webproglab4.dto.HitRequest;
 import co.glebmavi.webproglab4.dto.HitResponse;
-import co.glebmavi.webproglab4.model.entity.Hit;
-import co.glebmavi.webproglab4.model.entity.User;
 import co.glebmavi.webproglab4.model.service.HitService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -31,10 +29,13 @@ public class HitController {
         final var addedHit = hitService.addHit(hitRequest, principal);
         final var responseDto = new HitResponse(
                 addedHit.getId(),
-                addedHit.getCurr_date(),
-                addedHit.getExec_time(),
-                addedHit.getX(), addedHit.getY(),
-                addedHit.getR(), addedHit.isHit()
+                addedHit.getOwner().getUsername(),
+                addedHit.getX(),
+                addedHit.getY(),
+                addedHit.getR(),
+                addedHit.isHit(),
+                addedHit.getCurrDate(),
+                addedHit.getExecTime()
         );
         return ResponseEntity.ok(responseDto);
     }
@@ -42,14 +43,14 @@ public class HitController {
     @DeleteMapping
     public ResponseEntity<?> deleteAll(Principal principal) {
         log.info("Deleting all hits for user " + principal.getName());
-        hitService.removeAllByOwner((User) principal);
+        hitService.removeAllByOwner(principal);
         return ResponseEntity.ok().build();
     }
 
     @GetMapping
-    public ResponseEntity<List<Hit>> allResultsByUser(Principal principal) {
+    public ResponseEntity<List<HitResponse>> allResultsByUser(Principal principal) {
         log.info("Getting all hits for user " + principal.getName());
-        return ResponseEntity.ok(hitService.getAllHitsByOwner((User) principal));
+        return ResponseEntity.ok(hitService.getAllHitsByOwner(principal));
     }
 
 }

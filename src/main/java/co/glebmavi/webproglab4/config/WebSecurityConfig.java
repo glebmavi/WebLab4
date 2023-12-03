@@ -10,9 +10,10 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.config.http.SessionCreationPolicy;
 
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-
+import org.springframework.security.web.authentication.logout.LogoutHandler;
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -21,6 +22,7 @@ import static org.springframework.security.config.Customizer.withDefaults;
 public class WebSecurityConfig {
 
     private final JwtFilter jwtFilter;
+    private final LogoutHandler logoutHandler;
 
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
@@ -30,6 +32,10 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests((authorizeHttpRequests) ->authorizeHttpRequests.requestMatchers("/api/auth/login", "/api/auth/refresh", "/api/auth/register").permitAll()
                 .anyRequest().authenticated());
         http.addFilterAfter(jwtFilter, UsernamePasswordAuthenticationFilter.class);
+        http.logout((logout) ->
+                logout.logoutUrl("/api/auth/logout")
+                        .addLogoutHandler(logoutHandler)
+                        .logoutSuccessHandler((httpServletRequest, httpServletResponse, authentication) -> SecurityContextHolder.clearContext()));
         return http.build();
     }
 }

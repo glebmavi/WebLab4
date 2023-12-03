@@ -1,8 +1,11 @@
 package co.glebmavi.webproglab4.model.entity;
 
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.*;
+
+import java.util.List;
 
 @Entity
 @Getter
@@ -20,6 +23,10 @@ public class User {
     private String username;
     @Column(name = "password", nullable=false)
     private String password;
+
+    @JsonManagedReference
+    @OneToMany(mappedBy = "user")
+    private List<Token> tokens;
 
 
 }

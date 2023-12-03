@@ -5,10 +5,11 @@ import java.util.Date;
 
 public record HitResponse(
         @JsonProperty("id") long id,
-        Date curr_date,
-        long exec_time,
+        String owner,
         double x,
         double y,
         double r,
-        boolean hit) {
+        boolean hit,
+        Date currDate,
+        long execTime) {
 }

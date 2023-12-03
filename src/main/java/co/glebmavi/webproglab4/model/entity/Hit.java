@@ -29,10 +29,10 @@ public class Hit implements Serializable {
     private double r;
     @Column(name = "hit")
     private boolean hit;
-    @Column(name = "curr_date")
-    private Date curr_date;
-    @Column(name = "exec_time")
-    private long exec_time;
+    @Column(name = "currDate")
+    private Date currDate;
+    @Column(name = "execTime")
+    private long execTime;
 
 
 
@@ -42,8 +42,8 @@ public class Hit implements Serializable {
         this.y = 0;
         this.r = 0;
         this.hit = false;
-        this.curr_date = Date.from(Instant.now());
-        this.exec_time = 0;
+        this.currDate = Date.from(Instant.now());
+        this.execTime = 0;
     }
 
 
@@ -55,8 +55,8 @@ public class Hit implements Serializable {
                 ", y=" + y +
                 ", r=" + r +
                 ", hit=" + hit +
-                ", currentDate='" + curr_date + '\'' +
-                ", executionTime='" + exec_time + '\'' +
+                ", currentDate='" + currDate + '\'' +
+                ", executionTime='" + execTime + '\'' +
                 '}';
     }
 
@@ -64,12 +64,19 @@ public class Hit implements Serializable {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Hit bean)) return false;
-        return Objects.equals(getId(), bean.getId()) && getOwner().equals(bean.getOwner()) && Double.compare(getX(), bean.getX()) == 0 && Double.compare(getY(), bean.getY()) == 0 && Double.compare(getR(), bean.getR()) == 0 && isHit() == bean.isHit() && Objects.equals(getCurr_date(), bean.getCurr_date()) && Objects.equals(getExec_time(), bean.getExec_time());
+        return Objects.equals(getId(), bean.getId())
+                && getOwner().equals(bean.getOwner())
+                && Double.compare(getX(), bean.getX()) == 0
+                && Double.compare(getY(), bean.getY()) == 0
+                && Double.compare(getR(), bean.getR()) == 0
+                && isHit() == bean.isHit()
+                && Objects.equals(getCurrDate(), bean.getCurrDate())
+                && Objects.equals(getExecTime(), bean.getExecTime());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(getId(), getOwner(), getX(), getY(), getR(), isHit(), getCurr_date(), getExec_time());
+        return Objects.hash(getId(), getOwner(), getX(), getY(), getR(), isHit(), getCurrDate(), getExecTime());
     }
 
 }
