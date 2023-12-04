@@ -16,7 +16,6 @@ import java.security.Principal;
 
 @Slf4j
 @RestController
-@CrossOrigin
 @RequestMapping("/api/auth")
 @RequiredArgsConstructor
 public class UserController {

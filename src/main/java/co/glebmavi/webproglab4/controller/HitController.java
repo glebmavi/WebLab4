@@ -3,6 +3,7 @@ package co.glebmavi.webproglab4.controller;
 import co.glebmavi.webproglab4.dto.HitRequest;
 import co.glebmavi.webproglab4.dto.HitResponse;
 import co.glebmavi.webproglab4.model.service.HitService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -11,15 +12,11 @@ import java.security.Principal;
 import java.util.List;
 
 @Slf4j
-@CrossOrigin
 @RestController
 @RequestMapping("/api/hit")
+@RequiredArgsConstructor
 public class HitController {
     private final HitService hitService;
-
-    public HitController(HitService hitService) {
-        this.hitService = hitService;
-    }
 
     @PostMapping
     public ResponseEntity<HitResponse> addAttempt(
