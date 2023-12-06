@@ -1,0 +1,23 @@
+<header>
+  <div class="header_button" id="start">
+    <!-- Start Button -->
+    <button routerLink="/start">Start page</button>
+  </div>
+
+  <div class="header_button" id="main">
+    <!-- Start Button -->
+    <button routerLink="/main">Main page</button>
+  </div>
+
+  <div class="header_button" id="theme" (click)="toggleTheme()">Toggle Theme</div>
+  <div class="header_button" id="language">Language</div>
+
+  <div class="header_button" id="user">
+<!--    If user is logged in, show logout button-->
+    <!-- Logout Button -->
+    <button (click)="logout()">Logout</button>
+<!--    If user is not logged in, show login button or register button-->
+    <button routerLink="/register">Register</button>
+    <button routerLink="/login">Login</button>
+  </div>
+</header>

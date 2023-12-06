@@ -1,1 +1,31 @@
-/* You can add global styles to this file, and also import other style files */
+:root[data-theme="theme-light"] {
+  --background-color: linear-gradient(45deg, #da6d6c, #80709a,#4893ea);
+  --text-color: #000000;
+  --table-border-color: #333333;
+}:root[data-theme="theme-dark"] {
+   --background-color: linear-gradient(45deg, #0f0c29, #1a131f, #24243e);
+   --text-color: #dedede;
+   --table-border-color: #CCCCCC;
+ }
+
+body {
+  background: var(--background-color);
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  min-height: 100vh;
+  font-family: sans-serif;
+  font-size: 16px;
+  color: var(--text-color);
+}
+
+@keyframes gradient {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}

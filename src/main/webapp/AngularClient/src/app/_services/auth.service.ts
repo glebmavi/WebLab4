@@ -5,7 +5,7 @@ import {HttpClient, HttpHeaders} from "@angular/common/http";
 const AUTH_API = 'http://localhost:8080/WebProgLab4/api/auth/';
 
 const httpOptions = {
-  headers: new HttpHeaders({ 'Content-Type': 'application/json' }) // TODO: check si se necesita, esto puede causar problemas
+  headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
 
 @Injectable({
@@ -38,5 +38,11 @@ export class AuthService {
 
   logout(): Observable<any> {
     return this.http.post(AUTH_API + 'logout', { }, httpOptions);
+  }
+
+  refreshToken(refreshToken: string) {
+    return this.http.post(AUTH_API + 'refresh', {
+      refreshToken
+    }, httpOptions);
   }
 }

@@ -3,6 +3,7 @@ import {AuthService} from "../_services/auth.service";
 import {StorageService} from "../_services/storage.service";
 import {NgClass, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
+import {Router} from "@angular/router";
 
 @Component({
   selector: 'app-login',
@@ -26,7 +27,7 @@ export class LoginComponent implements OnInit {
   isLoginFailed = false;
   errorMessage = '';
 
-  constructor(private authService: AuthService, private storageService: StorageService) { }
+  constructor(private authService: AuthService, private storageService: StorageService, private router: Router) { }
 
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
@@ -39,12 +40,12 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(username, password).subscribe({
       next: data => {
-        this.storageService.saveToken(data.access_token);
+        this.storageService.saveTokens(data.access_token, data.refresh_token);
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
         this.username = username;
-        this.reloadPage();
+        this.sendToMainPage();
       },
       error: err => {
         this.errorMessage = err.error.message;
@@ -53,7 +54,7 @@ export class LoginComponent implements OnInit {
     });
   }
 
-  reloadPage(): void {
-    window.location.reload();
+  sendToMainPage(): void {
+    this.router.navigate(['/main']);
   }
 }
