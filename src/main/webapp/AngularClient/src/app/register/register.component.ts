@@ -1,8 +1,9 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../_services/auth.service";
-import {NgClass, NgIf} from "@angular/common";
+import {NgClass, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
+import {ThemeService} from "../_services/theme.service";
 
 // TODO: Modificar el template
 @Component({
@@ -11,9 +12,10 @@ import {Router} from "@angular/router";
   imports: [
     NgIf,
     FormsModule,
-    NgClass
+    NgClass,
+    NgOptimizedImage,
+    RouterLink
   ],
-  providers: [AuthService],
   templateUrl: './register.component.html',
   styleUrl: './register.component.less'
 })
@@ -25,10 +27,16 @@ export class RegisterComponent implements OnInit {
   isSuccessful = false;
   isSignUpFailed = false;
   errorMessage = '';
+  showPassword = false;
+  theme = '';
 
-  constructor(private authService: AuthService, private router: Router) { }
+  constructor(private authService: AuthService, private router: Router, private themeService: ThemeService) { }
 
   ngOnInit(): void {
+    this.themeService.currentThemeSubject.subscribe((theme) => {
+      this.theme = theme;
+    });
+
   }
 
   onSubmit(): void {
@@ -49,5 +57,9 @@ export class RegisterComponent implements OnInit {
 
   sendToLoginPage(): void {
     this.router.navigate(['/login']);
+  }
+
+  toggleShowPassword(): void {
+    this.showPassword = !this.showPassword;
   }
 }

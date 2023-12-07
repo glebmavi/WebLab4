@@ -1,23 +1,28 @@
-<header>
-  <div class="header_button" id="start">
-    <!-- Start Button -->
-    <button routerLink="/start">Start page</button>
+<header class="headerComponent component">
+  <div class="left_side">
+    <div class="header_button" id="start" routerLink="/start">
+      <img src="{{ theme === 'theme-light' ? 'assets/home-light.svg' : 'assets/home-dark.svg'}}" alt="start_icon" title="Home Page" [height]="dimension" [width]="dimension">
+    </div>
+
+    <div class="header_button" id="main" routerLink="/main">
+      <img src="{{ theme === 'theme-light' ? 'assets/aim-light.svg' : 'assets/aim-dark.svg'}}" alt="aim_icon" title="Main Page" [height]="dimension" [width]="dimension">
+    </div>
   </div>
 
-  <div class="header_button" id="main">
-    <!-- Start Button -->
-    <button routerLink="/main">Main page</button>
+  <div class="right_side">
+    <div class="header_button" id="theme" (click)="toggleTheme()">
+      <img src="{{ theme === 'theme-light' ? 'assets/moon-svgrepo-com.svg' : 'assets/sun-svgrepo-com.svg'}}" alt="theme_icon" title="Toggle Theme" [height]="dimension" [width]="dimension">
+    </div>
+    <div class="header_button" id="language">
+      <img src=" {{ theme === 'theme-light' ? 'assets/language-light.svg' : 'assets/language-dark.svg' }}" alt="language_icon" title="Change Language" [height]="dimension" [width]="dimension">
+    </div>
+
+    <div class="header_button" id="login" routerLink="/login" [hidden]="isLoggedIn">
+      <img src="{{ theme === 'theme-light' ? 'assets/login-light.svg' : 'assets/login-dark.svg' }}" alt="login_icon" title="Log In" [height]="dimension" [width]="dimension">
+    </div>
+    <div class="header_button" id="logout" (click)="logout()" [hidden]="!isLoggedIn">
+      <img src="{{ theme === 'theme-light' ? 'assets/logout-light.svg' : 'assets/logout-dark.svg' }}" alt="logout_icon" title="Log Out" [height]="dimension" [width]="dimension">
+    </div>
   </div>
 
-  <div class="header_button" id="theme" (click)="toggleTheme()">Toggle Theme</div>
-  <div class="header_button" id="language">Language</div>
-
-  <div class="header_button" id="user">
-<!--    If user is logged in, show logout button-->
-    <!-- Logout Button -->
-    <button (click)="logout()">Logout</button>
-<!--    If user is not logged in, show login button or register button-->
-    <button routerLink="/register">Register</button>
-    <button routerLink="/login">Login</button>
-  </div>
 </header>

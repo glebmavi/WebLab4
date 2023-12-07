@@ -7,11 +7,14 @@ import {HeaderComponent} from "./header/header.component";
 import {FooterComponent} from "./footer/footer.component";
 import {ThemeService} from "./_services/theme.service";
 import {StorageService} from "./_services/storage.service";
+import {AuthService} from "./_services/auth.service";
+import {HitService} from "./_services/hit.service";
 
 @Component({
   selector: 'app-root',
   standalone: true,
   imports: [CommonModule, RouterOutlet, FormsModule, HeaderComponent, FooterComponent, HttpClientModule],
+  providers: [ThemeService, StorageService, AuthService, HitService],
   templateUrl: './app.component.html',
   styleUrl: './app.component.less'
 })
@@ -23,10 +26,9 @@ export class AppComponent implements OnInit {
   ngOnInit() {
     this.themeService.setCurrentTheme(this.currentTheme);
 
-    this.themeService.currentTheme$.subscribe((theme) => {
+    this.themeService.currentThemeSubject.subscribe((theme) => {
       this.currentTheme = theme;
       this.storageService.setTheme(theme);
-      console.log('Current theme:', this.currentTheme);
     });
   }
 }

@@ -1,10 +1,11 @@
 import {Component, OnInit} from '@angular/core';
 import {AuthService} from "../_services/auth.service";
 import {StorageService} from "../_services/storage.service";
-import {NgClass, NgIf} from "@angular/common";
+import {NgClass, NgIf, NgOptimizedImage} from "@angular/common";
 import {FormsModule} from "@angular/forms";
-import {Router} from "@angular/router";
+import {Router, RouterLink} from "@angular/router";
 import {LoginRequest} from "../model/LoginRequest";
+import {ThemeService} from "../_services/theme.service";
 
 // TODO: Modificar el template
 @Component({
@@ -14,8 +15,9 @@ import {LoginRequest} from "../model/LoginRequest";
     NgIf,
     FormsModule,
     NgClass,
+    RouterLink,
+    NgOptimizedImage,
   ],
-  providers: [AuthService, StorageService],
   templateUrl: './login.component.html',
   styleUrl: './login.component.less'
 })
@@ -28,14 +30,25 @@ export class LoginComponent implements OnInit {
   isLoggedIn = false;
   isLoginFailed = false;
   errorMessage = '';
+  showPassword = false;
+  theme = '';
 
-  constructor(private authService: AuthService, private storageService: StorageService, private router: Router) { }
+  constructor(public authService: AuthService, private storageService: StorageService, private router: Router, private themeService: ThemeService) { }
 
   ngOnInit(): void {
+    this.authService.isLoggedIn.subscribe((isLoggedIn) => {
+      this.isLoggedIn = isLoggedIn;
+    });
+
     if (this.storageService.isLoggedIn()) {
-      this.isLoggedIn = true;
+      console.log('User already logged in');
+      this.authService.setLoggedIn(true);
       this.username = this.storageService.getUsername() ?? '';
     }
+
+    this.themeService.currentThemeSubject.subscribe((theme) => {
+      this.theme = theme;
+    });
   }
 
   onSubmit(): void {
@@ -46,7 +59,7 @@ export class LoginComponent implements OnInit {
         this.storageService.saveTokens(data.accessToken, data.refreshToken, data.username);
 
         this.isLoginFailed = false;
-        this.isLoggedIn = true;
+        this.authService.setLoggedIn(true);
         this.username = username;
         this.sendToMainPage();
       },
@@ -59,5 +72,9 @@ export class LoginComponent implements OnInit {
 
   sendToMainPage(): void {
     this.router.navigate(['/main']);
+  }
+
+  toggleShowPassword(): void {
+    this.showPassword = !this.showPassword;
   }
 }

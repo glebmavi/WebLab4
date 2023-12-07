@@ -1,0 +1,23 @@
+@hoverColor: #cccccc88;
+
+.themable_fill {
+  fill: var(--text-color);
+}
+
+.themable_stroke {
+  stroke: var(--text-color);
+}
+
+#svgGraph {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  position: static;
+  left: 50%;
+  margin: auto;
+  border-radius: 5px;
+
+  &:hover {
+    background-color: @hoverColor;
+  }
+}

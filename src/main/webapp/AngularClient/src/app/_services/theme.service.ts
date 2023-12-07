@@ -8,9 +8,7 @@ export class ThemeService {
 
   constructor() { }
 
-  private currentThemeSubject = new BehaviorSubject<string>("");
-  currentTheme$ = this.currentThemeSubject.asObservable();
-
+  public currentThemeSubject = new BehaviorSubject<string>("");
   toggleTheme() {
     const currentTheme = this.currentThemeSubject.value === 'theme-light' ? 'theme-dark' : 'theme-light';
     this.setCurrentTheme(currentTheme);

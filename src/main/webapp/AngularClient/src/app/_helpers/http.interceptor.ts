@@ -10,11 +10,12 @@ import {catchError, Observable, switchMap} from "rxjs";
 import {StorageService} from "../_services/storage.service";
 import {AuthService} from "../_services/auth.service";
 import {TokenResponse} from "../model/TokenResponse";
+import {Router} from "@angular/router";
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
 
-  constructor(private storageService: StorageService, private authService: AuthService) {
+  constructor(private storageService: StorageService, private authService: AuthService, private router: Router) {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> | any {
@@ -51,6 +52,9 @@ export class HttpRequestInterceptor implements HttpInterceptor {
       catchError((error) => {
         console.error('Token refresh failed, logging out', error);
         this.authService.logout();
+        console.log('Logged out successfully');
+        this.storageService.cleanTokens();
+        this.router.navigate(['/login']);
         return error;
       })
     );

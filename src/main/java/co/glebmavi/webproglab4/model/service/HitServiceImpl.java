@@ -26,7 +26,7 @@ public class HitServiceImpl implements HitService {
 
     @Override
     public Hit addHit(HitRequest hitRequest, Principal user) {
-        final long startExec = System.currentTimeMillis();
+        final long startExec = System.nanoTime();
         final Hit currHit = new Hit();
         final boolean isHit = AreaHitChecker.isHit(hitRequest.x(), hitRequest.y(), hitRequest.r());
 
@@ -35,7 +35,7 @@ public class HitServiceImpl implements HitService {
         currHit.setR(hitRequest.r());
         currHit.setHit(isHit);
         currHit.setCurrDate(Date.from(Instant.now()));
-        final long endExec = System.currentTimeMillis();
+        final long endExec = System.nanoTime();
         final long executionTime = endExec - startExec;
         currHit.setExecTime(executionTime);
         currHit.setOwner(userRepository.findByUsername(user.getName()));

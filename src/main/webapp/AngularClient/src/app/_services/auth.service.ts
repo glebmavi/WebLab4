@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import {Observable} from "rxjs";
+import {BehaviorSubject, Observable} from "rxjs";
 import {HttpClient, HttpHeaders} from "@angular/common/http";
 import {TokenResponse} from "../model/TokenResponse";
 
@@ -14,6 +14,8 @@ const httpOptions = {
 })
 export class AuthService {
   constructor(private http: HttpClient) {}
+
+  public isLoggedIn = new BehaviorSubject(false);
 
   login(username: string, password: string): Observable<TokenResponse> {
     return this.http.post<TokenResponse>(
@@ -38,6 +40,7 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
+    this.isLoggedIn.next(false);
     return this.http.post(AUTH_API + 'logout', { }, httpOptions);
   }
 
@@ -45,5 +48,13 @@ export class AuthService {
     return this.http.post<TokenResponse>(AUTH_API + 'refresh', {
       refresh_token
     }, httpOptions);
+  }
+
+  setLoggedIn(value: boolean) {
+    this.isLoggedIn.next(value);
+  }
+
+  getLoggedIn() {
+    return this.isLoggedIn.value;
   }
 }
