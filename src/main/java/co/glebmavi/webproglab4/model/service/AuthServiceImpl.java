@@ -33,7 +33,7 @@ public class AuthServiceImpl implements AuthService {
         final var accessToken = jwtProvider.generateAccessToken(user);
         final var refreshToken = jwtProvider.generateRefreshToken(user);
         saveUserToken(user, accessToken);
-        return new JwtResponse(accessToken, refreshToken);
+        return new JwtResponse(accessToken, refreshToken, user.getUsername());
     }
 
     @Override
@@ -47,7 +47,7 @@ public class AuthServiceImpl implements AuthService {
             revokeAllUserTokens(user);
             final var accessToken = jwtProvider.generateAccessToken(user);
             final var newRefreshToken = jwtProvider.generateRefreshToken(user);
-            return new JwtResponse(accessToken, newRefreshToken);
+            return new JwtResponse(accessToken, newRefreshToken, user.getUsername());
         }
         throw new AuthException("Refresh token not found");
     }

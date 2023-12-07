@@ -1,6 +1,5 @@
 import {Injectable} from "@angular/core";
 import {
-  HTTP_INTERCEPTORS,
   HttpErrorResponse,
   HttpEvent,
   HttpHandler,
@@ -10,6 +9,7 @@ import {
 import {catchError, Observable, switchMap} from "rxjs";
 import {StorageService} from "../_services/storage.service";
 import {AuthService} from "../_services/auth.service";
+import {TokenResponse} from "../model/TokenResponse";
 
 @Injectable()
 export class HttpRequestInterceptor implements HttpInterceptor {
@@ -18,17 +18,16 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   }
 
   intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> | any {
-
-    if (this.storageService.getAccessToken()) {
+    const accessToken = this.storageService.getAccessToken();
+    if (accessToken && !req.url.includes('refresh')) {
       const cloned = req.clone({
-        withCredentials: true,
-        headers: req.headers.set('Authorization', 'Bearer ' + this.storageService.getAccessToken()),
+        headers: req.headers.set('Authorization', 'Bearer ' + accessToken),
       });
 
       return next.handle(cloned).pipe(
         catchError((error) => {
-          if (error instanceof HttpErrorResponse && error.status === 401) {
-            return this.handle401Error(req, next);
+          if (error instanceof HttpErrorResponse && (error.status === 401 || error.status === 403)) {
+            return this.handleInvalidToken(req, next);
           } else {
             return error;
           }
@@ -39,13 +38,13 @@ export class HttpRequestInterceptor implements HttpInterceptor {
     }
   }
 
-  private handle401Error(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> | any {
+  private handleInvalidToken(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>> | any {
     return this.authService.refreshToken(<string>this.storageService.getRefreshToken()).pipe(
-      switchMap((response: any) => {
-        this.storageService.saveTokens(response.access_token, response.refresh_token);
+      switchMap((response: TokenResponse) => {
+        console.log('Token refreshed');
+        this.storageService.saveTokens(response.accessToken, response.refreshToken, response.username);
         const cloned = req.clone({
-          withCredentials: true,
-          headers: req.headers.set('Authorization', 'Bearer ' + response.access_token),
+          headers: req.headers.set('Authorization', 'Bearer ' + response.accessToken),
         });
         return next.handle(cloned);
       }),
@@ -58,7 +57,3 @@ export class HttpRequestInterceptor implements HttpInterceptor {
   }
 
 }
-
-export const httpInterceptorProviders = [
-  { provide: HTTP_INTERCEPTORS, useClass: HttpRequestInterceptor, multi: true },
-];

@@ -11,6 +11,6 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RefreshJwtRequest {
-    @JsonProperty("refresh_token")
+    @JsonProperty("refreshToken")
     public String refreshToken;
 }

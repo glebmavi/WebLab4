@@ -35,7 +35,7 @@ public class UserController {
 
     @PostMapping("/refresh")
     public ResponseEntity<JwtResponse> refresh(@RequestBody RefreshJwtRequest request) {
-        log.info("Refresh request: {}", request.getRefreshToken());
+        log.info("Refresh request: {}", request);
         try {
             return ResponseEntity.ok(authService.refreshAccessToken(request.getRefreshToken()));
         } catch (AuthException e) {

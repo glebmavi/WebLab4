@@ -4,6 +4,7 @@ import {NgClass, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
 
+// TODO: Modificar el template
 @Component({
   selector: 'app-register',
   standalone: true,

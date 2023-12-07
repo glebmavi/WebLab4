@@ -8,8 +8,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class JwtResponse {
     private final String type = "Bearer";
-    @JsonProperty("access_token")
+    @JsonProperty("accessToken")
     private String accessToken;
-    @JsonProperty("refresh_token")
+    @JsonProperty("refreshToken")
     private String refreshToken;
+    @JsonProperty("username")
+    private String username;
 }

@@ -57,8 +57,8 @@ Context Path: `/WebProgLab4`
 ```json
 {
     "type": "Bearer",
-    "access_token": "some token",
-    "refresh_token": "some token"
+    "accessToken": "some token",
+    "refreshToken": "some token"
 }
 ```
 
@@ -67,15 +67,15 @@ Context Path: `/WebProgLab4`
 ##### Запрос
 ```json
 {
-  "refresh_token": "your refresh token"
+  "refreshToken": "your refresh token"
 }
 ```
 ##### Ответ
 ```json
 {
     "type": "Bearer",
-    "access_token": "some token",
-    "refresh_token": "some token"
+    "accessToken": "some token",
+    "refreshToken": "some token"
 }
 ```
 
@@ -92,8 +92,8 @@ Context Path: `/WebProgLab4`
 ```json
 {
     "type": "Bearer",
-    "access_token": "some token",
-    "refresh_token": "some token"
+    "accessToken": "some token",
+    "refreshToken": "some token"
 }
 ```
 
@@ -162,13 +162,14 @@ Context Path: `/WebProgLab4`
 Как пример:
 ```json
 {
-  "id": 2,
-  "curr_date": "2023-12-03T17:51:37.016+00:00",
-  "exec_time": 0,
-  "x": 1.0,
-  "y": 2.0,
-  "r": 1.0,
-  "hit": false
+  "id": 152,
+  "owner": "a",
+  "x": 0.0,
+  "y": 0.0,
+  "r": 0.0,
+  "hit": false,
+  "currDate": "2023-12-07T12:45:16.676+00:00",
+  "execTime": 2
 }
 ```
 

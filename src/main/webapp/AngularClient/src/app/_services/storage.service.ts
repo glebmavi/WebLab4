@@ -13,10 +13,11 @@ export class StorageService {
     window.sessionStorage.clear();
   }
 
-  public saveTokens(accessToken: string, refreshToken: string): void {
+  public saveTokens(accessToken: string, refreshToken: string, username: string): void {
     this.cleanTokens();
     window.sessionStorage.setItem(ACCESS_TOKEN, accessToken);
     window.sessionStorage.setItem(REFRESH_TOKEN, refreshToken);
+    window.sessionStorage.setItem('username', username);
   }
 
   public isLoggedIn(): boolean {
@@ -30,6 +31,10 @@ export class StorageService {
 
   public getRefreshToken(): string | null {
     return window.sessionStorage.getItem(REFRESH_TOKEN);
+  }
+
+  public getUsername(): string | null {
+    return window.sessionStorage.getItem('username');
   }
 
   public getTheme(): string | null {

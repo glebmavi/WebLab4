@@ -1,1 +1,17 @@
-<p>main works!</p>
+<div class="form-container">
+  <form [formGroup]="form" (ngSubmit)="onSubmit()">
+    <div>
+      X: <input formControlName="x"  placeholder="Value from [-5 to 3]">
+      <label *ngIf="form.get('x')?.invalid && form.get('x')?.touched" [ngClass]="'error'">X required with value from [-5 to 3]</label>
+    </div>
+    <div>
+      Y: <input formControlName="y"  placeholder="Value from [-5 to 3]">
+      <label *ngIf="form.get('y')?.invalid && form.get('y')?.touched" [ngClass]="'error'">Y required with value from [-5 to 3]</label>
+    </div>
+    <div>
+      R: <input formControlName="r"  placeholder="Value from [-5 to 3]">
+      <label *ngIf="form.get('r')?.invalid && form.get('r')?.touched" [ngClass]="'error'">R required with value from [-5 to 3]</label>
+    </div>
+    <button type="submit">Submit</button>
+  </form>
+</div>

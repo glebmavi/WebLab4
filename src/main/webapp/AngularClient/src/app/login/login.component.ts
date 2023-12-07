@@ -4,7 +4,9 @@ import {StorageService} from "../_services/storage.service";
 import {NgClass, NgIf} from "@angular/common";
 import {FormsModule} from "@angular/forms";
 import {Router} from "@angular/router";
+import {LoginRequest} from "../model/LoginRequest";
 
+// TODO: Modificar el template
 @Component({
   selector: 'app-login',
   standalone: true,
@@ -18,9 +20,9 @@ import {Router} from "@angular/router";
   styleUrl: './login.component.less'
 })
 export class LoginComponent implements OnInit {
-  form: any = {
-    username: null,
-    password: null
+  form: LoginRequest = {
+    username: "",
+    password: ""
   };
   username: string | undefined;
   isLoggedIn = false;
@@ -32,6 +34,7 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     if (this.storageService.isLoggedIn()) {
       this.isLoggedIn = true;
+      this.username = this.storageService.getUsername() ?? '';
     }
   }
 
@@ -40,7 +43,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(username, password).subscribe({
       next: data => {
-        this.storageService.saveTokens(data.access_token, data.refresh_token);
+        this.storageService.saveTokens(data.accessToken, data.refreshToken, data.username);
 
         this.isLoginFailed = false;
         this.isLoggedIn = true;
