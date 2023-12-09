@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Injectable, OnInit} from '@angular/core';
 import {HitService} from "../_services/hit.service";
 import {HitResponse} from "../model/HitResponse";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
 import {NgClass, NgForOf, NgIf} from "@angular/common";
 import {SvgGraphComponent} from "../svg-graph/svg-graph.component";
+import {BehaviorSubject} from "rxjs";
 
 @Component({
   selector: 'app-main',
@@ -19,19 +20,20 @@ import {SvgGraphComponent} from "../svg-graph/svg-graph.component";
   templateUrl: './main.component.html',
   styleUrl: './main.component.less'
 })
+@Injectable({
+  providedIn: 'root'
+})
 export class MainComponent implements OnInit {
+  validators = [Validators.required, Validators.min(-5), Validators.max(3), Validators.pattern(/^-?\d*(\.\d+)?$/)];
   form = new FormGroup({
-    x: new FormControl(null, Validators.compose(
-      [Validators.required, Validators.min(-5), Validators.max(3)])),
-    y: new FormControl(null, Validators.compose(
-      [Validators.required, Validators.min(-5), Validators.max(3)])),
-    r: new FormControl(null, Validators.compose(
-      [Validators.required, Validators.min(-5), Validators.max(3)]))
+    x: new FormControl(null, Validators.compose(this.validators)),
+    y: new FormControl(null, Validators.compose(this.validators)),
+    r: new FormControl(null, Validators.compose(this.validators)),
   });
 
   hasSubmittingError = false;
   errorMessage = '';
-  hitList: HitResponse[] = [];
+  hitList: BehaviorSubject<HitResponse[]> = new BehaviorSubject<HitResponse[]>([]);
 
   constructor(private hitService: HitService) {
   }
@@ -40,7 +42,7 @@ export class MainComponent implements OnInit {
     this.hitService.getHits().subscribe({
       next: response => {
         console.log('Hits received successfully:', response);
-        this.hitList = response;
+        this.hitList.next(response.reverse());
       },
       error: err => {
         console.error('Error getting hits:', err);
@@ -48,16 +50,23 @@ export class MainComponent implements OnInit {
     });
   }
 
-
   onSubmit(): void {
     const xValue = this.form.get('x')?.value ?? 0;
     const yValue = this.form.get('y')?.value ?? 0;
     const rValue = this.form.get('r')?.value ?? 0;
+    this.submitWithVariables(xValue, yValue, rValue);
+  }
+
+  submitWithVariables(xValue: number, yValue: number, rValue: number) {
     console.log('Submitting hit:', xValue, yValue, rValue);
     this.hitService.postHit(xValue, yValue, rValue).subscribe({
       next: response => {
         console.log('Hit posted successfully:', response);
-        this.hitList.push(response);
+
+        const currentList = this.hitList.value.slice();
+        currentList.unshift(response);
+        this.hitList.next(currentList);
+
         this.hasSubmittingError = false;
       },
       error: err => {
@@ -66,13 +75,14 @@ export class MainComponent implements OnInit {
         this.hasSubmittingError = true;
       }
     });
+
   }
 
   clearTable(): void {
     this.hitService.deleteHits().subscribe({
       next: () => {
         console.log('Hits cleared successfully');
-        this.hitList = [];
+        this.hitList.next([]);
       },
       error: err => {
         console.error('Error clearing hits:', err);

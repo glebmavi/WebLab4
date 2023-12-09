@@ -6,17 +6,27 @@
     <div class="form-group">
       <span>X:</span>
       <input formControlName="x"  placeholder="Value from [-5 to 3]">
-      <label *ngIf="form.get('x')?.invalid && form.get('x')?.touched" [ngClass]="'error'">X required with value from [-5 to 3]</label>
     </div>
     <div class="form-group">
       <span>Y:</span>
       <input formControlName="y"  placeholder="Value from [-5 to 3]">
-      <label *ngIf="form.get('y')?.invalid && form.get('y')?.touched" [ngClass]="'error'">Y required with value from [-5 to 3]</label>
     </div>
     <div class="form-group">
       <span>R:</span>
       <input formControlName="r"  placeholder="Value from [-5 to 3]">
-      <label *ngIf="form.get('r')?.invalid && form.get('r')?.touched" [ngClass]="'error'">R required with value from [-5 to 3]</label>
+    </div>
+    <div class="form-group">
+      <span *ngIf="form.get('y')?.invalid && form.get('y')?.touched ||
+            form.get('x')?.invalid && form.get('x')?.touched ||
+            form.get('r')?.invalid && form.get('r')?.touched"
+            [ngClass]="'error'">
+  {{
+          (form.get('y')?.invalid && form.get('y')?.touched ? 'Y required with value from [-5 to 3]' : '') +
+          (form.get('x')?.invalid && form.get('x')?.touched ? 'X required with value from [-5 to 3]' : '') +
+          (form.get('r')?.invalid && form.get('r')?.touched ? 'R required with value from [-5 to 3]' : '')
+        }}
+</span>
+
     </div>
     <div class="form-group">
       <button type="submit" [disabled]="form.invalid">Submit</button>
@@ -40,7 +50,7 @@
         <th>Time</th>
         <th>Execution Time</th>
       </tr>
-      <tr *ngFor="let hit of hitList">
+      <tr *ngFor="let hit of hitList.value">
         <td>{{hit.x}}</td>
         <td>{{hit.y}}</td>
         <td>{{hit.r}}</td>

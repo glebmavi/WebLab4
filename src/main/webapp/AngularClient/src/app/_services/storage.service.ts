@@ -20,11 +20,6 @@ export class StorageService {
     window.sessionStorage.setItem('username', username);
   }
 
-  public isLoggedIn(): boolean {
-    const hasToken = window.sessionStorage.getItem(ACCESS_TOKEN);
-    return !!hasToken;
-  }
-
   public getAccessToken(): string | null {
     return window.sessionStorage.getItem(ACCESS_TOKEN);
   }

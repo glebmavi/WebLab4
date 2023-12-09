@@ -3,24 +3,21 @@ import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../_services/auth.service";
 import {StorageService} from "../_services/storage.service";
 import {ThemeService} from "../_services/theme.service";
-import {NgOptimizedImage} from "@angular/common";
+import {NgIf, NgOptimizedImage} from "@angular/common";
 
 @Component({
   selector: 'app-header',
   standalone: true,
   imports: [
     RouterLink,
-    NgOptimizedImage
+    NgOptimizedImage,
+    NgIf
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.less'
 })
 export class HeaderComponent implements OnInit {
-  constructor(
-    private authService: AuthService,
-    private storageService: StorageService,
-    private router: Router,
-    private themeService: ThemeService) {}
+  constructor(private authService: AuthService, private storageService: StorageService, private router: Router, private themeService: ThemeService) {}
 
   theme = "";
   isLoggedIn = false;
@@ -30,12 +27,9 @@ export class HeaderComponent implements OnInit {
     this.authService.isLoggedIn.subscribe((isLoggedIn) => {
       this.isLoggedIn = isLoggedIn;
     });
-    this.authService.isLoggedIn.subscribe(console.log);
-
     this.themeService.currentThemeSubject.subscribe((theme) => {
       this.theme = theme;
     });
-    this.themeService.currentThemeSubject.subscribe(console.log);
   }
 
   logout(): void {

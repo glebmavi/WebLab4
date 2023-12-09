@@ -18,6 +18,7 @@ export class AuthService {
   public isLoggedIn = new BehaviorSubject(false);
 
   login(username: string, password: string): Observable<TokenResponse> {
+    this.setLoggedIn(true);
     return this.http.post<TokenResponse>(
       AUTH_API + 'login',
       {
@@ -40,7 +41,7 @@ export class AuthService {
   }
 
   logout(): Observable<any> {
-    this.isLoggedIn.next(false);
+    this.setLoggedIn(false);
     return this.http.post(AUTH_API + 'logout', { }, httpOptions);
   }
 

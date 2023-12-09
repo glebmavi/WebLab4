@@ -4,17 +4,17 @@ import { RouterOutlet } from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {HeaderComponent} from "./header/header.component";
-import {FooterComponent} from "./footer/footer.component";
 import {ThemeService} from "./_services/theme.service";
 import {StorageService} from "./_services/storage.service";
 import {AuthService} from "./_services/auth.service";
 import {HitService} from "./_services/hit.service";
+import {MainComponent} from "./main/main.component";
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, FormsModule, HeaderComponent, FooterComponent, HttpClientModule],
-  providers: [ThemeService, StorageService, AuthService, HitService],
+  imports: [CommonModule, RouterOutlet, FormsModule, HeaderComponent, HttpClientModule],
+  providers: [ThemeService, StorageService, AuthService, HitService, MainComponent],
   templateUrl: './app.component.html',
   styleUrl: './app.component.less'
 })

@@ -4,7 +4,7 @@
       <img src="{{ theme === 'theme-light' ? 'assets/home-light.svg' : 'assets/home-dark.svg'}}" alt="start_icon" title="Home Page" [height]="dimension" [width]="dimension">
     </div>
 
-    <div class="header_button" id="main" routerLink="/main">
+    <div *ngIf="isLoggedIn" class="header_button" id="main" routerLink="/main">
       <img src="{{ theme === 'theme-light' ? 'assets/aim-light.svg' : 'assets/aim-dark.svg'}}" alt="aim_icon" title="Main Page" [height]="dimension" [width]="dimension">
     </div>
   </div>

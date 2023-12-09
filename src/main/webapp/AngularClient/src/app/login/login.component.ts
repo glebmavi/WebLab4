@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
       this.isLoggedIn = isLoggedIn;
     });
 
-    if (this.storageService.isLoggedIn()) {
+    if (this.authService.getLoggedIn()) {
       console.log('User already logged in');
       this.authService.setLoggedIn(true);
       this.username = this.storageService.getUsername() ?? '';
@@ -57,9 +57,7 @@ export class LoginComponent implements OnInit {
     this.authService.login(username, password).subscribe({
       next: data => {
         this.storageService.saveTokens(data.accessToken, data.refreshToken, data.username);
-
         this.isLoginFailed = false;
-        this.authService.setLoggedIn(true);
         this.username = username;
         this.sendToMainPage();
       },
