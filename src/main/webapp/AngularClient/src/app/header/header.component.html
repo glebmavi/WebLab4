@@ -1,26 +1,29 @@
 <header class="headerComponent component">
   <div class="left_side">
     <div class="header_button" id="start" routerLink="/start">
-      <img src="{{ theme === 'theme-light' ? 'assets/home-light.svg' : 'assets/home-dark.svg'}}" alt="start_icon" title="Home Page" [height]="dimension" [width]="dimension">
+      <img src="{{ theme === 'theme-light' ? 'assets/home-light.svg' : 'assets/home-dark.svg'}}" alt="start_icon" i18n-title title="Home Page" [height]="dimension" [width]="dimension">
     </div>
 
     <div *ngIf="isLoggedIn" class="header_button" id="main" routerLink="/main">
-      <img src="{{ theme === 'theme-light' ? 'assets/aim-light.svg' : 'assets/aim-dark.svg'}}" alt="aim_icon" title="Main Page" [height]="dimension" [width]="dimension">
+      <img src="{{ theme === 'theme-light' ? 'assets/aim-light.svg' : 'assets/aim-dark.svg'}}" alt="aim_icon" i18n-title title="Main Page" [height]="dimension" [width]="dimension">
     </div>
   </div>
   <div class="right_side">
     <div class="header_button" id="theme" (click)="toggleTheme()">
-      <img src="{{ theme === 'theme-light' ? 'assets/moon-svgrepo-com.svg' : 'assets/sun-svgrepo-com.svg'}}" alt="theme_icon" title="Toggle Theme" [height]="dimension" [width]="dimension">
+      <img src="{{ theme === 'theme-light' ? 'assets/moon-svgrepo-com.svg' : 'assets/sun-svgrepo-com.svg'}}" alt="theme_icon" i18n-title title="Toggle Theme" [height]="dimension" [width]="dimension">
     </div>
-    <div class="header_button" id="language">
-      <img src=" {{ theme === 'theme-light' ? 'assets/language-light.svg' : 'assets/language-dark.svg' }}" alt="language_icon" title="Change Language" [height]="dimension" [width]="dimension">
+    <div class="header_button" (click)="toggleShowSelect()" id="language">
+      <img src=" {{ theme === 'theme-light' ? 'assets/language-light.svg' : 'assets/language-dark.svg' }}" alt="language_icon" i18n-title title="Change Language" [height]="dimension" [width]="dimension">
     </div>
+    <select (change)="changeLanguage()" [(ngModel)]="activeLocale" [hidden]="showSelect" class="localeSelector">
+      <option *ngFor="let locale of locales" [value]="locale.code">{{ locale.name }}</option>
+    </select>
 
     <div class="header_button" id="login" routerLink="/login" [hidden]="isLoggedIn">
-      <img src="{{ theme === 'theme-light' ? 'assets/login-light.svg' : 'assets/login-dark.svg' }}" alt="login_icon" title="Log In" [height]="dimension" [width]="dimension">
+      <img src="{{ theme === 'theme-light' ? 'assets/login-light.svg' : 'assets/login-dark.svg' }}" alt="login_icon" i18n-title title="Log In" [height]="dimension" [width]="dimension">
     </div>
     <div class="header_button" id="logout" (click)="logout()" [hidden]="!isLoggedIn">
-      <img src="{{ theme === 'theme-light' ? 'assets/logout-light.svg' : 'assets/logout-dark.svg' }}" alt="logout_icon" title="Log Out" [height]="dimension" [width]="dimension">
+      <img src="{{ theme === 'theme-light' ? 'assets/logout-light.svg' : 'assets/logout-dark.svg' }}" alt="logout_icon" i18n-title title="Log Out" [height]="dimension" [width]="dimension">
     </div>
   </div>
 

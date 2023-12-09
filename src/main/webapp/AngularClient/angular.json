@@ -32,10 +32,12 @@
             "styles": [
               "src/styles.less"
             ],
-            "scripts": []
+            "scripts": [],
+            "i18nMissingTranslation": "error"
           },
           "configurations": {
             "production": {
+              "localize": true,
               "budgets": [
                 {
                   "type": "initial",
@@ -53,7 +55,17 @@
             "development": {
               "optimization": false,
               "extractLicenses": false,
-              "sourceMap": true
+              "sourceMap": true,
+              "localize": false
+            },
+            "en": {
+              "localize": ["en"]
+            },
+            "ru": {
+              "localize": ["ru"]
+            },
+            "es": {
+              "localize": ["es"]
             }
           },
           "defaultConfiguration": "production"
@@ -66,6 +78,15 @@
             },
             "development": {
               "buildTarget": "AngularClient:build:development"
+            },
+            "en": {
+              "buildTarget": "AngularClient:build:en"
+            },
+            "ru": {
+              "buildTarget": "AngularClient:build:ru"
+            },
+            "es": {
+              "buildTarget": "AngularClient:build:es"
             }
           },
           "defaultConfiguration": "development"
@@ -73,7 +94,9 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "AngularClient:build"
+            "buildTarget": "AngularClient:build",
+            "format": "json",
+            "outputPath": "src/locale"
           }
         },
         "test": {
@@ -93,6 +116,17 @@
               "src/styles.less"
             ],
             "scripts": []
+          }
+        }
+      },
+      "i18n": {
+        "sourceLocale": "en",
+        "locales": {
+          "ru": {
+            "translation": "src/locale/messages.ru.json"
+          },
+          "es": {
+            "translation": "src/locale/messages.es.json"
           }
         }
       }

@@ -1,9 +1,10 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, Inject, LOCALE_ID, OnInit} from '@angular/core';
 import {Router, RouterLink} from "@angular/router";
 import {AuthService} from "../_services/auth.service";
 import {StorageService} from "../_services/storage.service";
 import {ThemeService} from "../_services/theme.service";
-import {NgIf, NgOptimizedImage} from "@angular/common";
+import {NgForOf, NgIf, NgOptimizedImage} from "@angular/common";
+import {FormsModule} from "@angular/forms";
 
 @Component({
   selector: 'app-header',
@@ -11,17 +12,32 @@ import {NgIf, NgOptimizedImage} from "@angular/common";
   imports: [
     RouterLink,
     NgOptimizedImage,
-    NgIf
+    NgIf,
+    FormsModule,
+    NgForOf
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.less'
 })
 export class HeaderComponent implements OnInit {
-  constructor(private authService: AuthService, private storageService: StorageService, private router: Router, private themeService: ThemeService) {}
+  locales = [
+    { code: 'en', name: 'English 🇬🇧' },
+    { code: 'ru', name: 'Русский 🇷🇺' },
+    { code: 'es', name: 'Español 🇨🇴' },
+  ];
+
+  constructor(
+    private authService: AuthService,
+    private storageService: StorageService,
+    private router: Router,
+    private themeService: ThemeService,
+    @Inject(LOCALE_ID) public activeLocale : string
+  ) {}
 
   theme = "";
   isLoggedIn = false;
   dimension = 30;
+  showSelect = true;
 
   ngOnInit() {
     this.authService.isLoggedIn.subscribe((isLoggedIn) => {
@@ -52,6 +68,15 @@ export class HeaderComponent implements OnInit {
     this.themeService.currentThemeSubject.subscribe((theme) => {
       this.theme = theme;
     });
+
+  }
+
+  toggleShowSelect() {
+    this.showSelect = !this.showSelect;
+  }
+
+  changeLanguage() {
+    this.toggleShowSelect();
 
   }
 }

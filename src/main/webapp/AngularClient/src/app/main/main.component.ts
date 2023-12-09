@@ -41,6 +41,12 @@ export class MainComponent implements OnInit {
   errorMessage = '';
   hitList: BehaviorSubject<HitResponse[]> = new BehaviorSubject<HitResponse[]>([]);
 
+
+  requiredError = $localize` is required with value from [-5 to 3]`;
+  hitString = $localize`Hit`;
+  missString = $localize`Miss`;
+
+
   constructor(private hitService: HitService) {}
 
   ngOnInit(): void {
