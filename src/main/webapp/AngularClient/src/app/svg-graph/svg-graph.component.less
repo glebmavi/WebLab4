@@ -1,5 +1,9 @@
 @hoverColor: #cccccc88;
 
+#svgForm {
+  width: 100%;
+}
+
 .themable_fill {
   fill: var(--text-color);
 }
@@ -12,24 +16,11 @@
   display: flex;
   align-content: center;
   justify-content: center;
-  position: static;
-  left: 50%;
   margin: auto;
   border-radius: 5px;
 
   &:hover {
     background-color: @hoverColor;
-  }
-}
-
-.form-group {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  margin: 10px;
-
-  span {
-    margin-right: 50px;
   }
 }
 

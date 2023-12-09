@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, ElementRef, HostListener, OnInit, ViewChild} from '@angular/core';
 import {FormControl, FormGroup, ReactiveFormsModule, Validators} from "@angular/forms";
 import {MainComponent} from "../main/main.component";
 import {HitResponse} from "../model/HitResponse";
@@ -14,15 +14,17 @@ import {NgForOf} from "@angular/common";
   templateUrl: './graph.html',
   styleUrl: './svg-graph.component.less'
 })
-export class SvgGraphComponent implements OnInit{
+export class SvgGraphComponent implements OnInit, AfterViewInit{
   svgForm = new FormGroup({
     x: new FormControl(0, Validators.compose(
       [Validators.required, Validators.min(-5), Validators.max(3)])),
     y: new FormControl(0, Validators.compose(
       [Validators.required, Validators.min(-5), Validators.max(3)])),
   });
-  svgWidth = 400;
-  svgHeight = 400;
+  svgHeight = '35%';
+  svgWidth = '35%';
+  width = 0;
+  height = 0;
 
   textXValue = "X= ";
   textYValue = "Y= ";
@@ -38,6 +40,28 @@ export class SvgGraphComponent implements OnInit{
 
   constructor(private mainComponent: MainComponent) {}
 
+  @ViewChild('svgGraph') svgGraph!: ElementRef;
+  @HostListener('window:resize', ['$event'])
+  onresize(event: any) {
+    this.setSvgDimensions();
+  }
+
+  setSvgDimensions(): void {
+    this.width = this.svgGraph.nativeElement.getBoundingClientRect().width;
+    this.height = this.svgGraph.nativeElement.getBoundingClientRect().height;
+    if (this.width < 200) {
+      this.svgHeight = '60%';
+      this.svgWidth = '60%';
+    } else if (this.width < 500) {
+      this.svgHeight = '35%';
+      this.svgWidth = '35%';
+    } else {
+      this.svgHeight = '25%';
+      this.svgWidth = '25%';
+    }
+  }
+
+
   ngOnInit(): void {
     this.mainComponent.form.get('r')?.valueChanges.subscribe((rValue) => {
       if (!(rValue === null || rValue === undefined || rValue <= 0 || this.mainComponent.form.get('r')?.invalid)) {
@@ -52,7 +76,6 @@ export class SvgGraphComponent implements OnInit{
     });
 
     this.mainComponent.hitList.subscribe((hitList) => {
-      console.log('Hits received successfully:', hitList);
       this.pointsToDraw = JSON.parse(JSON.stringify(hitList));
       if (this.currentR === 0) {
         this.currentR = this.pointsToDraw[0].r;
@@ -62,7 +85,10 @@ export class SvgGraphComponent implements OnInit{
         this.hitToPoint(hit);
       });
     });
+  }
 
+  ngAfterViewInit(): void {
+    this.setSvgDimensions();
   }
 
   onSubmit(): void {
@@ -80,8 +106,10 @@ export class SvgGraphComponent implements OnInit{
     let x : number, y : number;
     let r = this.mainComponent.form.get('r')?.value;
     if (!(r === null || r === undefined || r <= 0 || this.mainComponent.form.get('r')?.invalid)) {
-      x = (event.offsetX - (this.svgWidth / 2)) / ((this.svgWidth * (3 / 10)) / r);
-      y = (event.offsetY - (this.svgHeight / 2)) / ((this.svgHeight * (-3 / 10)) / r);
+      this.width = this.svgGraph.nativeElement.getBoundingClientRect().width;
+      this.height = this.svgGraph.nativeElement.getBoundingClientRect().height;
+      x = (event.offsetX - (this.width / 2)) / ((this.width * (3 / 10)) / r);
+      y = (event.offsetY - (this.height / 2)) / ((this.height * (-3 / 10)) / r);
       this.svgForm.get('x')?.setValue(Number(x.toFixed(3)));
       this.svgForm.get('y')?.setValue(Number(y.toFixed(3)));
       this.textXValue = "X = " + x.toFixed(3);

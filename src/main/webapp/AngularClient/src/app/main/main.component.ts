@@ -2,7 +2,7 @@ import {Component, Injectable, OnInit} from '@angular/core';
 import {HitService} from "../_services/hit.service";
 import {HitResponse} from "../model/HitResponse";
 import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} from "@angular/forms";
-import {NgClass, NgForOf, NgIf} from "@angular/common";
+import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {SvgGraphComponent} from "../svg-graph/svg-graph.component";
 import {BehaviorSubject} from "rxjs";
 
@@ -15,7 +15,8 @@ import {BehaviorSubject} from "rxjs";
     NgIf,
     NgClass,
     SvgGraphComponent,
-    NgForOf
+    NgForOf,
+    DatePipe
   ],
   templateUrl: './main.component.html',
   styleUrl: './main.component.less'
@@ -24,24 +25,29 @@ import {BehaviorSubject} from "rxjs";
   providedIn: 'root'
 })
 export class MainComponent implements OnInit {
-  validators = [Validators.required, Validators.min(-5), Validators.max(3), Validators.pattern(/^-?\d*(\.\d+)?$/)];
+  validators = [
+    Validators.required,
+    Validators.min(-5),
+    Validators.max(3),
+    Validators.pattern(/^-?\d*(\.\d+)?$/),
+    Validators.maxLength(10)
+  ];
   form = new FormGroup({
-    x: new FormControl(null, Validators.compose(this.validators)),
-    y: new FormControl(null, Validators.compose(this.validators)),
-    r: new FormControl(null, Validators.compose(this.validators)),
+    x: new FormControl(0, Validators.compose(this.validators)),
+    y: new FormControl(0, Validators.compose(this.validators)),
+    r: new FormControl(0, Validators.compose(this.validators)),
   });
-
   hasSubmittingError = false;
   errorMessage = '';
   hitList: BehaviorSubject<HitResponse[]> = new BehaviorSubject<HitResponse[]>([]);
 
-  constructor(private hitService: HitService) {
-  }
+  constructor(private hitService: HitService) {}
 
   ngOnInit(): void {
+    this.clearErrorMessage();
+    setInterval(() => this.clearErrorMessage(), 5000);
     this.hitService.getHits().subscribe({
       next: response => {
-        console.log('Hits received successfully:', response);
         this.hitList.next(response.reverse());
       },
       error: err => {
@@ -54,6 +60,11 @@ export class MainComponent implements OnInit {
     const xValue = this.form.get('x')?.value ?? 0;
     const yValue = this.form.get('y')?.value ?? 0;
     const rValue = this.form.get('r')?.value ?? 0;
+    if (rValue <= 0) {
+      this.errorMessage = 'R must be greater than 0';
+      this.hasSubmittingError = true;
+      return;
+    }
     this.submitWithVariables(xValue, yValue, rValue);
   }
 
@@ -86,8 +97,15 @@ export class MainComponent implements OnInit {
       },
       error: err => {
         console.error('Error clearing hits:', err);
+        this.errorMessage = err.error.message;
+        this.hasSubmittingError = true;
       }
     });
+  }
+
+  clearErrorMessage() : void {
+    this.hasSubmittingError = false;
+    this.errorMessage = '';
   }
 
 }

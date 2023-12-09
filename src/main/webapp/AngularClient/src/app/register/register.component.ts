@@ -5,7 +5,6 @@ import {FormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {ThemeService} from "../_services/theme.service";
 
-// TODO: Modificar el template
 @Component({
   selector: 'app-register',
   standalone: true,

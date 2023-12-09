@@ -1,5 +1,6 @@
-<form [formGroup]="svgForm" >
-  <svg xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="-10 -10 20 20" id="svgGraph" (click)="onSubmit()" (mousemove)="onMouseMove($event)">
+<form [formGroup]="svgForm" id="svgForm" >
+  <svg xmlns="http://www.w3.org/2000/svg" [attr.height]="svgHeight" [attr.width]="svgWidth"
+       viewBox="-10 -10 20 20" #svgGraph (click)="onSubmit()" (mousemove)="onMouseMove($event)" id="svgGraph">
     <!--Definition of arrowhead markers -->
     <defs>
       <marker id="arrowhead" markerWidth="6" markerHeight="6" refX="3" refY="3" orient="auto">

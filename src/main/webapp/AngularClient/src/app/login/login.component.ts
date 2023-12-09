@@ -7,7 +7,6 @@ import {Router, RouterLink} from "@angular/router";
 import {LoginRequest} from "../model/LoginRequest";
 import {ThemeService} from "../_services/theme.service";
 
-// TODO: Modificar el template
 @Component({
   selector: 'app-login',
   standalone: true,

@@ -29,15 +29,18 @@
 
     </div>
     <div class="form-group">
-      <button type="submit" [disabled]="form.invalid">Submit</button>
+      <button type="submit" [disabled]="form.invalid" class="send">Submit</button>
     </div>
 
-    <div *ngIf="f.submitted && hasSubmittingError" class="alert" role="alert">Login failed: {{ errorMessage }} </div>
+    <div class="form-group">
+      <span *ngIf="f.submitted && hasSubmittingError" class="alert" [ngClass]="'error'">Submitting failed: {{ errorMessage }} </span>
+    </div>
+
   </form>
 
   <form (ngSubmit)="clearTable()" class="clearTable">
     <div class="form-group">
-      <button type="submit">Clear table</button>
+      <button type="submit" class="delete">Clear table</button>
     </div>
   </form>
   <div style="overflow: auto; height: 400px;">
@@ -55,8 +58,8 @@
         <td>{{hit.y}}</td>
         <td>{{hit.r}}</td>
         <td [ngClass]="hit.hit ? 'success' : 'fail'">{{hit.hit ? 'Hit' : 'Miss'}}</td>
-        <td>{{hit.currDate}}</td>
-        <td>{{hit.execTime}}</td>
+        <td>{{hit.currDate | date:'long' }}</td>
+        <td>{{hit.execTime / 1000000}} ms</td>
       </tr>
     </table>
   </div>

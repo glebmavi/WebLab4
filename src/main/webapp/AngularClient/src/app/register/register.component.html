@@ -1,11 +1,12 @@
 <div class="registerComponent component">
     <form *ngIf="!isSuccessful" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
       <div class="form-group">
-        <label for="username">Username</label>
+        <span>Username</span>
         <input type="text" class="form-control" id="username" name="username" [(ngModel)]="form.username"
                required minlength="3" maxlength="20" #username="ngModel"
           [ngClass]="{ 'is-invalid': f.submitted && username.errors }"
         />
+        <div id="imgMock"> </div>
         <div class="invalid-feedback" *ngIf="username.errors && f.submitted">
           <div *ngIf="username.errors['required']" class="alert">Username is required</div>
           <div *ngIf="username.errors['minlength']" class="alert">Username must be at least 3 characters</div>
@@ -14,7 +15,7 @@
       </div>
 
       <div class="form-group">
-        <label for="password">Password</label>
+        <span>Password</span>
         <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="password" name="password"
                [(ngModel)]="form.password" required minlength="6" #password="ngModel"
                [ngClass]="{ 'is-invalid': f.submitted && password.errors }"

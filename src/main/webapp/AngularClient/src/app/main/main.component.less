@@ -7,19 +7,9 @@
   background-color: transparent;
 }
 
-.form-group {
-  display: flex;
-  align-content: center;
-  justify-content: center;
-  margin: 10px;
-
-  span {
-    margin-right: 50px;
-  }
-}
-
 .svgComponent {
   margin-bottom: 50px;
+  width: 100%;
 }
 
 form {
@@ -55,4 +45,45 @@ table {
   position: absolute;
   color: red;
   text-shadow: dimgray 2px 2px 5px;
+}
+
+@greenButton: #22AA22;
+@redButton: #AA2222;
+
+.send {
+  background-color: @greenButton;
+
+  &:disabled {
+    background-color: #ccc;
+    color: #999;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(:disabled) {
+    background-color: darken(@greenButton, 20%);
+  }
+
+  &:active:not(:disabled) {
+    background-color: darken(@greenButton, 40%);
+  }
+}
+
+.delete {
+  background-color: @redButton;
+
+  &:hover {
+    background-color: darken(@redButton, 20%);
+  }
+
+  &:active {
+    background-color: darken(@redButton, 40%);
+  }
+}
+
+td.success {
+  background-color: fade(@greenButton, 20%);
+}
+
+td.fail {
+  background-color: fade(@redButton, 20%);
 }

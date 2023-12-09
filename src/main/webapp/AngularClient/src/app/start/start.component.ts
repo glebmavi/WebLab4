@@ -17,7 +17,6 @@ export class StartComponent implements OnInit {
   }
 
   clock() {
-
     const now = new Date();
     this.clockText = now.toLocaleString(this.locale, {
       hour: "2-digit",
