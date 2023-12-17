@@ -1,6 +1,6 @@
 import {Component, OnInit} from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { RouterOutlet } from '@angular/router';
+import {CommonModule} from '@angular/common';
+import {RouterOutlet} from '@angular/router';
 import {FormsModule} from "@angular/forms";
 import {HttpClientModule} from "@angular/common/http";
 import {HeaderComponent} from "./header/header.component";

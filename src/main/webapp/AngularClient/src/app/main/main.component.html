@@ -5,15 +5,15 @@
   <form [formGroup]="form" (ngSubmit)="onSubmit()" #f="ngForm">
     <div class="form-group">
       <span>X:</span>
-      <input formControlName="x"  placeholder="Value from [-5 to 3]">
+      <input formControlName="x" i18n-placeholder placeholder="Value from [-5 to 3]">
     </div>
     <div class="form-group">
       <span>Y:</span>
-      <input formControlName="y"  placeholder="Value from [-5 to 3]">
+      <input formControlName="y" i18n-placeholder placeholder="Value from [-5 to 3]">
     </div>
     <div class="form-group">
       <span>R:</span>
-      <input formControlName="r"  placeholder="Value from [-5 to 3]">
+      <input formControlName="r" i18n-placeholder placeholder="Value from [-5 to 3]">
     </div>
     <div class="form-group">
       <span *ngIf="form.get('y')?.invalid && form.get('y')?.touched ||
@@ -21,26 +21,26 @@
             form.get('r')?.invalid && form.get('r')?.touched"
             [ngClass]="'error'">
   {{
-          (form.get('y')?.invalid && form.get('y')?.touched ? 'Y required with value from [-5 to 3]' : '') +
-          (form.get('x')?.invalid && form.get('x')?.touched ? 'X required with value from [-5 to 3]' : '') +
-          (form.get('r')?.invalid && form.get('r')?.touched ? 'R required with value from [-5 to 3]' : '')
+          (form.get('y')?.invalid && form.get('y')?.touched ? 'Y' + requiredError + '\n' : '') +
+          (form.get('x')?.invalid && form.get('x')?.touched ? 'X' + requiredError + '\n' : '') +
+          (form.get('r')?.invalid && form.get('r')?.touched ? 'R' + requiredError + '\n' : '')
         }}
 </span>
 
     </div>
     <div class="form-group">
-      <button type="submit" [disabled]="form.invalid" class="send">Submit</button>
+      <button type="submit" [disabled]="form.invalid" class="send" i18n="@@submitButton">Submit</button>
     </div>
 
     <div class="form-group">
-      <span *ngIf="f.submitted && hasSubmittingError" class="alert" [ngClass]="'error'">Submitting failed: {{ errorMessage }} </span>
+      <span *ngIf="f.submitted && hasSubmittingError" class="alert" [ngClass]="'error'" i18n="@@submitFailed">Submit failed: {{ errorMessage }} </span>
     </div>
 
   </form>
 
   <form (ngSubmit)="clearTable()" class="clearTable">
     <div class="form-group">
-      <button type="submit" class="delete">Clear table</button>
+      <button type="submit" class="delete" i18n="@@clearButton">Clear table</button>
     </div>
   </form>
   <div style="overflow: auto; height: 400px;">
@@ -49,15 +49,15 @@
         <th>X</th>
         <th>Y</th>
         <th>R</th>
-        <th>Result</th>
-        <th>Time</th>
-        <th>Execution Time</th>
+        <th i18n="@@hit">Hit</th>
+        <th i18n="@@time">Time</th>
+        <th i18n="@@execTime">Execution Time</th>
       </tr>
       <tr *ngFor="let hit of hitList.value">
         <td>{{hit.x}}</td>
         <td>{{hit.y}}</td>
         <td>{{hit.r}}</td>
-        <td [ngClass]="hit.hit ? 'success' : 'fail'">{{hit.hit ? 'Hit' : 'Miss'}}</td>
+        <td [ngClass]="hit.hit ? 'success' : 'fail'">{{hit.hit ? hitString : missString}}</td>
         <td>{{hit.currDate | date:'long' }}</td>
         <td>{{hit.execTime / 1000000}} ms</td>
       </tr>

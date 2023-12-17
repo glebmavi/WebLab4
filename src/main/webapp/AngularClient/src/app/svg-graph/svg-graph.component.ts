@@ -116,7 +116,7 @@ export class SvgGraphComponent implements OnInit, AfterViewInit{
       this.textYValue = "Y = " + y.toFixed(3);
       this.textRValue = "";
     } else {
-      this.textRValue = "R not defined";
+      this.textRValue = $localize`R not defined` ;
     }
   }
 
