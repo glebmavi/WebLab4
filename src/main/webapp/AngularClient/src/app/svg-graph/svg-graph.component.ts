@@ -47,14 +47,14 @@ export class SvgGraphComponent implements OnInit, AfterViewInit{
   }
 
   setSvgDimensions(): void {
-    this.width = this.svgGraph.nativeElement.getBoundingClientRect().width;
-    this.height = this.svgGraph.nativeElement.getBoundingClientRect().height;
-    if (this.width < 200) {
-      this.svgHeight = '60%';
-      this.svgWidth = '60%';
-    } else if (this.width < 500) {
-      this.svgHeight = '35%';
-      this.svgWidth = '35%';
+    this.width = window.innerWidth;
+    this.height = window.innerHeight;
+    if (this.width < 717) {
+      this.svgHeight = '75%';
+      this.svgWidth = '75%';
+    } else if (this.width < 1195) {
+      this.svgHeight = '50%';
+      this.svgWidth = '50%';
     } else {
       this.svgHeight = '25%';
       this.svgWidth = '25%';

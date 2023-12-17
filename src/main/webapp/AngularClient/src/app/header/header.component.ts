@@ -1,5 +1,5 @@
 import {Component, Inject, LOCALE_ID, OnInit} from '@angular/core';
-import {Router, RouterLink} from "@angular/router";
+import {NavigationStart, Router, RouterLink} from "@angular/router";
 import {AuthService} from "../_services/auth.service";
 import {StorageService} from "../_services/storage.service";
 import {ThemeService} from "../_services/theme.service";
@@ -38,6 +38,7 @@ export class HeaderComponent implements OnInit {
   isLoggedIn = false;
   dimension = 30;
   showSelect = true;
+  currentRoute = '';
 
   ngOnInit() {
     this.authService.isLoggedIn.subscribe((isLoggedIn) => {
@@ -45,6 +46,11 @@ export class HeaderComponent implements OnInit {
     });
     this.themeService.currentThemeSubject.subscribe((theme) => {
       this.theme = theme;
+    });
+    this.router.events.subscribe((event) => {
+      if (event instanceof NavigationStart) {
+        this.currentRoute = event.url;
+      }
     });
   }
 
@@ -76,7 +82,6 @@ export class HeaderComponent implements OnInit {
   }
 
   changeLanguage() {
-    window.location.href = `../${this.activeLocale}`;
-    this.toggleShowSelect();
+    window.location.href = `../${this.activeLocale}/#` + this.currentRoute;
   }
 }

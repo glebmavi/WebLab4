@@ -1,4 +1,4 @@
-import {Component, OnInit} from '@angular/core';
+import {Component, HostListener, OnInit} from '@angular/core';
 
 @Component({
   selector: 'app-start',
@@ -11,9 +11,27 @@ export class StartComponent implements OnInit {
 
   clockText: string = "";
   locale = document.documentElement.lang;
+  width = 0;
+  clockFont = 'font-size:80px;';
+
+  @HostListener('window:resize', ['$event'])
+  onresize(event: any) {
+    this.setClockDimensions();
+  }
   ngOnInit() {
     this.clock();
     setInterval(() => this.clock(), 1000);
+  }
+
+  setClockDimensions(): void {
+    this.width = window.innerWidth;
+    if (this.width < 717) {
+      this.clockFont = 'font-size:40px;';
+    } else if (this.width < 1195) {
+      this.clockFont = 'font-size:60px;';
+    } else {
+      this.clockFont = 'font-size:80px;';
+    }
   }
 
   clock() {
