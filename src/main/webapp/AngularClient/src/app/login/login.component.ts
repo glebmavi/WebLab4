@@ -43,6 +43,7 @@ export class LoginComponent implements OnInit {
       console.log('User already logged in');
       this.authService.setLoggedIn(true);
       this.username = this.storageService.getUsername() ?? '';
+      this.sendToMainPage();
     }
 
     this.themeService.currentThemeSubject.subscribe((theme) => {
@@ -61,8 +62,9 @@ export class LoginComponent implements OnInit {
         this.sendToMainPage();
       },
       error: err => {
-        this.errorMessage = err.error.message;
+        this.errorMessage = $localize`Bad request`;
         this.isLoginFailed = true;
+        this.isLoggedIn = false;
       }
     });
   }

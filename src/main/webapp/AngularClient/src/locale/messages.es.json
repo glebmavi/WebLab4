@@ -16,6 +16,7 @@
     "dontHaveAcc": " ¿No tienes una cuenta? ",
     "registerbutton": "Registrarse",
     "loggedAs": "Sesión iniciada como {$INTERPOLATION}",
+    "5901790283338489145": "Solicitud incorrecta",
     "8969440255477178333": "Valor de [-5 a 3]",
     "submitButton": "Enviar",
     "submitFailed": "Error al enviar: {$INTERPOLATION}",
