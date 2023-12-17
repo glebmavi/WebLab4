@@ -1,3 +1,5 @@
+import org.springframework.boot.gradle.tasks.bundling.BootJar
+
 plugins {
     java
     id("org.springframework.boot") version "3.2.0"
@@ -21,7 +23,8 @@ dependencies {
     implementation("org.springframework.boot:spring-boot-starter-data-jpa:3.0.4")
     implementation("org.springframework.boot:spring-boot-starter-security:3.0.4")
 
-    implementation("org.projectlombok:lombok:1.18.26")
+    compileOnly("org.springframework.boot:spring-boot-starter-tomcat:3.1.0")
+
     compileOnly("org.projectlombok:lombok:1.18.26")
     annotationProcessor("org.projectlombok:lombok:1.18.26")
     implementation("org.slf4j:slf4j-api:2.0.5")
@@ -33,6 +36,12 @@ dependencies {
     runtimeOnly("org.postgresql:postgresql:42.5.4")
 
     testImplementation("org.springframework.boot:spring-boot-starter-test:3.1.0")
+}
+
+tasks.named<BootJar>("bootJar") {
+    mainClass.set("co.glebmavi.webproglab4.WebProgLab4Application")
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+
 }
 
 tasks.withType<Test> {
