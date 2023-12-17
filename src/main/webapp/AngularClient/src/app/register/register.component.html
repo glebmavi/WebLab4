@@ -1,10 +1,9 @@
 <div class="registerComponent component">
     <form *ngIf="!isSuccessful" name="form" (ngSubmit)="f.form.valid && onSubmit()" #f="ngForm">
       <div class="form-group">
-        <span i18n="@@username">Username</span>
+        <span class="authInput" i18n="@@username">Username</span>
         <input type="text" class="form-control" id="username" name="username" [(ngModel)]="form.username"
                required minlength="3" maxlength="20" #username="ngModel"
-          [ngClass]="{ 'is-invalid': f.submitted && username.errors }"
         />
         <div id="imgMock"> </div>
         <div class="invalid-feedback" *ngIf="username.errors && f.submitted">
@@ -15,10 +14,9 @@
       </div>
 
       <div class="form-group">
-        <span i18n="@@password">Password</span>
+        <span class="authInput" i18n="@@password">Password</span>
         <input [type]="showPassword ? 'text' : 'password'" class="form-control" id="password" name="password"
                [(ngModel)]="form.password" required minlength="6" #password="ngModel"
-               [ngClass]="{ 'is-invalid': f.submitted && password.errors }"
         />
         <img (click)="toggleShowPassword()" src="{{ theme === 'theme-light' ? 'assets/eye-slash-light.svg' : 'assets/eye-slash-dark.svg'}}" alt="eye_icon"
              i18n-title title="See/Hide Password" height="20" width="20" class="togglePassword"/>
