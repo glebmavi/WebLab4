@@ -37,6 +37,7 @@
           },
           "configurations": {
             "production": {
+              "baseHref": "/~s372819/WebProgLab4/",
               "localize": true,
               "budgets": [
                 {
@@ -120,13 +121,18 @@
         }
       },
       "i18n": {
-        "sourceLocale": "en",
+        "sourceLocale": {
+          "code": "en",
+          "baseHref": "en/"
+        },
         "locales": {
           "ru": {
-            "translation": "src/locale/messages.ru.json"
+            "translation": "src/locale/messages.ru.json",
+            "baseHref": "ru/"
           },
           "es": {
-            "translation": "src/locale/messages.es.json"
+            "translation": "src/locale/messages.es.json",
+            "baseHref": "es/"
           }
         }
       }

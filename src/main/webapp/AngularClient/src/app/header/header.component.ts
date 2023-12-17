@@ -76,7 +76,7 @@ export class HeaderComponent implements OnInit {
   }
 
   changeLanguage() {
+    window.location.href = `../${this.activeLocale}`;
     this.toggleShowSelect();
-
   }
 }

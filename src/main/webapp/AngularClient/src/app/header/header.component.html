@@ -1,10 +1,10 @@
 <header class="headerComponent component">
   <div class="left_side">
-    <div class="header_button" id="start" routerLink="/start">
+    <div class="header_button" id="start" routerLink="./start">
       <img src="{{ theme === 'theme-light' ? 'assets/home-light.svg' : 'assets/home-dark.svg'}}" alt="start_icon" i18n-title title="Home Page" [height]="dimension" [width]="dimension">
     </div>
 
-    <div *ngIf="isLoggedIn" class="header_button" id="main" routerLink="/main">
+    <div *ngIf="isLoggedIn" class="header_button" id="main" routerLink="./main">
       <img src="{{ theme === 'theme-light' ? 'assets/aim-light.svg' : 'assets/aim-dark.svg'}}" alt="aim_icon" i18n-title title="Main Page" [height]="dimension" [width]="dimension">
     </div>
   </div>
@@ -16,10 +16,10 @@
       <img src=" {{ theme === 'theme-light' ? 'assets/language-light.svg' : 'assets/language-dark.svg' }}" alt="language_icon" i18n-title title="Change Language" [height]="dimension" [width]="dimension">
     </div>
     <select (change)="changeLanguage()" [(ngModel)]="activeLocale" [hidden]="showSelect" class="localeSelector">
-      <option *ngFor="let locale of locales" [value]="locale.code">{{ locale.name }}</option>
+      <option *ngFor="let locale of locales" [value]="locale.code" class="languageOption">{{ locale.name }}</option>
     </select>
 
-    <div class="header_button" id="login" routerLink="/login" [hidden]="isLoggedIn">
+    <div class="header_button" id="login" routerLink="./login" [hidden]="isLoggedIn">
       <img src="{{ theme === 'theme-light' ? 'assets/login-light.svg' : 'assets/login-dark.svg' }}" alt="login_icon" i18n-title title="Log In" [height]="dimension" [width]="dimension">
     </div>
     <div class="header_button" id="logout" (click)="logout()" [hidden]="!isLoggedIn">
