@@ -28,21 +28,24 @@ export class MainComponent implements OnInit {
   validators = [
     Validators.required,
     Validators.min(-5),
-    Validators.max(3),
     Validators.pattern(/^-?\d*(\.\d+)?$/),
     Validators.maxLength(10)
   ];
+  validatorsRX = this.validators.concat(Validators.max(3));
+  validatorsY = this.validators.concat(Validators.max(5));
   form = new FormGroup({
-    x: new FormControl(0, Validators.compose(this.validators)),
-    y: new FormControl(0, Validators.compose(this.validators)),
-    r: new FormControl(0, Validators.compose(this.validators)),
+    x: new FormControl(0, Validators.compose(this.validatorsRX)),
+    y: new FormControl(0, Validators.compose(this.validatorsY)),
+    r: new FormControl(0, Validators.compose(this.validatorsRX)),
   });
   hasSubmittingError = false;
   errorMessage = '';
   hitList: BehaviorSubject<HitResponse[]> = new BehaviorSubject<HitResponse[]>([]);
 
 
-  requiredError = $localize` is required with value from [-5 to 3]`;
+  requiredError = $localize` is required with value from `;
+  range = '[-5;3]';
+  rangeY = '[-5;5]';
   hitString = $localize`Hit`;
   missString = $localize`Miss`;
 
