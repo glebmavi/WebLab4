@@ -6,6 +6,7 @@ import {FormsModule} from "@angular/forms";
 import {Router, RouterLink} from "@angular/router";
 import {LoginRequest} from "../model/LoginRequest";
 import {ThemeService} from "../_services/theme.service";
+import {TokenResponse} from "../model/TokenResponse";
 
 @Component({
   selector: 'app-login',
@@ -39,16 +40,29 @@ export class LoginComponent implements OnInit {
       this.isLoggedIn = isLoggedIn;
     });
 
-    if (this.authService.getLoggedIn()) {
-      console.log('User already logged in');
-      this.authService.setLoggedIn(true);
-      this.username = this.storageService.getUsername() ?? '';
-      this.sendToMainPage();
-    }
-
     this.themeService.currentThemeSubject.subscribe((theme) => {
       this.theme = theme;
     });
+
+    if (this.authService.getLoggedIn()) {
+      console.log('User already logged in');
+      this.username = this.storageService.getUsername() ?? '';
+      this.sendToMainPage();
+    } else if (this.storageService.getRefreshToken()) {
+      this.authService.refreshToken(<string>this.storageService.getRefreshToken()).subscribe({
+        next: response => {
+          console.log('Token refreshed');
+          this.onLoggedIn(response, <string>this.storageService.getUsername());
+          },
+        error: error => {
+          console.error('Token refresh failed, logging out', error);
+          this.authService.logout();
+          this.storageService.cleanTokens();
+          this.router.navigate(['/login']);
+        }
+        });
+
+    }
   }
 
   onSubmit(): void {
@@ -56,10 +70,7 @@ export class LoginComponent implements OnInit {
 
     this.authService.login(username, password).subscribe({
       next: data => {
-        this.storageService.saveTokens(data.accessToken, data.refreshToken, data.username);
-        this.isLoginFailed = false;
-        this.username = username;
-        this.sendToMainPage();
+        this.onLoggedIn(data, username);
       },
       error: err => {
         this.errorMessage = $localize`Bad request`;
@@ -75,5 +86,13 @@ export class LoginComponent implements OnInit {
 
   toggleShowPassword(): void {
     this.showPassword = !this.showPassword;
+  }
+
+  onLoggedIn(response: TokenResponse, username: string): void {
+    this.storageService.saveTokens(response.accessToken, response.refreshToken, response.username);
+    this.authService.setLoggedIn(true);
+    this.isLoginFailed = false;
+    this.username = username;
+    this.sendToMainPage();
   }
 }

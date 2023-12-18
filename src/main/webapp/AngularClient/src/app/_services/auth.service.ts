@@ -45,9 +45,9 @@ export class AuthService {
     return this.http.post(AUTH_API + 'logout', { }, httpOptions);
   }
 
-  refreshToken(refresh_token: string): Observable<TokenResponse> {
+  refreshToken(refreshToken: string): Observable<TokenResponse> {
     return this.http.post<TokenResponse>(AUTH_API + 'refresh', {
-      refresh_token
+      refreshToken
     }, httpOptions);
   }
 

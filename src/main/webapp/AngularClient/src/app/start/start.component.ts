@@ -21,10 +21,12 @@ export class StartComponent implements OnInit {
   ngOnInit() {
     this.clock();
     setInterval(() => this.clock(), 1000);
+    this.setClockDimensions();
   }
 
   setClockDimensions(): void {
     this.width = window.innerWidth;
+    console.log("Screen width: " + this.width);
     if (this.width < 717) {
       this.clockFont = 'font-size:40px;';
     } else if (this.width < 1195) {

@@ -5,6 +5,9 @@ import {FormControl, FormGroup, FormsModule, ReactiveFormsModule, Validators} fr
 import {DatePipe, NgClass, NgForOf, NgIf} from "@angular/common";
 import {SvgGraphComponent} from "../svg-graph/svg-graph.component";
 import {BehaviorSubject} from "rxjs";
+import {Router} from "@angular/router";
+import {AuthService} from "../_services/auth.service";
+import {StorageService} from "../_services/storage.service";
 
 @Component({
   selector: 'app-main',
@@ -50,7 +53,7 @@ export class MainComponent implements OnInit {
   missString = $localize`Miss`;
 
 
-  constructor(private hitService: HitService) {}
+  constructor(private hitService: HitService, private router: Router, private authService: AuthService, private storageService: StorageService) {}
 
   ngOnInit(): void {
     this.clearErrorMessage();
@@ -61,6 +64,16 @@ export class MainComponent implements OnInit {
       },
       error: err => {
         console.error('Error getting hits:', err);
+        this.authService.logout().subscribe({
+          next: () => {
+            console.log('Logged out successfully');
+            this.storageService.cleanTokens();
+            this.router.navigate(['/login']);
+          },
+          error: (err) => {
+            console.error('Logout error:', err);
+          }
+        });
       }
     });
   }

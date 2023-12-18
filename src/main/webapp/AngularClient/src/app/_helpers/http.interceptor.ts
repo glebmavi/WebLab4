@@ -47,6 +47,7 @@ export class HttpRequestInterceptor implements HttpInterceptor {
         const cloned = req.clone({
           headers: req.headers.set('Authorization', 'Bearer ' + response.accessToken),
         });
+        this.authService.setLoggedIn(true);
         return next.handle(cloned);
       }),
       catchError((error) => {
